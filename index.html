@@ -4,406 +4,323 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yuji Jones</title>
-  <meta name="description" content="Yuji Jones is a senior at Claremont McKenna College studying Economics and International Relations. Resume, projects, values and interests.">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Yuji Jones, a senior at Claremont McKenna College studying Economics and International Relations.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=69">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #111;
+      --muted: #737373;
+      --line: #ececec;
+      --bg: #fff;
+      --left: max(360px, calc((100% - 32px) / 3));
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 32px; }
+
+    /* Top bar */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 28px 0;
+    }
+    nav a { font-weight: 500; transition: color .15s; }
+    nav a:hover { color: var(--muted); }
+
+    /* Rows: label on the left, content on the right */
+    .row {
+      display: grid;
+      grid-template-columns: var(--left) 1fr;
+      gap: 32px;
+      padding: 40px 0;
+      border-top: 1px solid var(--line);
+    }
+    .row:first-of-type { border-top: 0; padding-top: 140px; }
+    .label { font-weight: 500; }
+    .portrait { position: relative; width: 220px; margin: 0; align-self: start; }
+    .portrait img {
+      width: 100%; aspect-ratio: 2 / 3; object-fit: cover; display: block;
+      border-radius: 4px; background: var(--line);
+    }
+    .portrait::after {
+      content: ""; position: absolute; inset: 55% 0 0 0; border-radius: 0 0 4px 4px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.55));
+    }
+    .portrait figcaption {
+      position: absolute; left: 18px; bottom: 16px; z-index: 1;
+      color: #fff; font-size: 20px; font-weight: 500; line-height: 1.2;
+    }
+
+    /* Fold-open sections: closed, they read as a list; open, label left and content right */
+    .fold { display: flow-root; border-top: 1px solid var(--line); padding: 22px 0; }
+    .fold[open] { padding-bottom: 40px; }
+    .fold summary {
+      float: left; width: var(--left);
+      list-style: none; cursor: pointer; user-select: none; transition: color .15s;
+    }
+    .fold summary::-webkit-details-marker { display: none; }
+    .fold summary::before {
+      content: "\25B8"; display: inline-block; width: 12px; margin-right: 8px;
+      text-align: center; font-size: 14px; line-height: 1; color: var(--ink); transition: transform .5s ease;
+    }
+    .fold.is-open summary::before { transform: rotate(90deg); }
+    .fold summary:hover { color: var(--muted); }
+    .fold > div { margin-left: calc(var(--left) + 32px); }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    .intro p { color: var(--muted); max-width: 56ch; }
+    .intro p + p { margin-top: 12px; }
+    @media (min-width: 721px) { .intro { margin-top: -7px; } } /* line up the first line of text with the top of the photo */
+    .links { display: flex; gap: 18px; margin-top: 18px; }
+
+    .item + .item { margin-top: 28px; }
+    .item h3 {
+      font-size: 14px; font-weight: 500;
+      display: flex; justify-content: space-between; gap: 16px;
+    }
+    .item h3 .when { color: var(--muted); font-weight: 400; white-space: nowrap; }
+    .item .where { color: var(--ink); opacity: .55; font-size: 13px; }
+    .item p { color: var(--muted); font-size: 13px; margin-top: 4px; max-width: 60ch; }
+    .cmc { color: #981a31; }
+    .item p b { color: var(--ink); font-weight: 500; }
+    .item .links { margin-top: 6px; font-size: 13px; }
+
+    .ext { border-bottom: 1px solid var(--line); transition: border-color .15s; }
+    .ext:hover { border-color: var(--ink); }
+    .ext::after { content: " \2197"; color: var(--muted); }
+
+    .facts { list-style: none; }
+    .facts li { color: var(--muted); padding-left: 16px; position: relative; }
+    .facts li + li { margin-top: 10px; }
+    .facts li::before { content: "\2013"; position: absolute; left: 0; color: var(--ink); }
+    .facts b { color: var(--ink); font-weight: 500; }
+
+    footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 28px 0 36px; border-top: 1px solid var(--line);
+    }
+    footer .social { display: flex; gap: 16px; margin-left: auto; }
+    footer .social a { display: block; color: var(--ink); transition: opacity .15s; }
+    footer .social a:hover { opacity: .5; }
+    footer .email { display: flex; align-items: center; gap: 10px; transition: opacity .15s; }
+    footer .email:hover { opacity: .5; }
+    footer svg { width: 18px; height: 18px; display: block; fill: currentColor; }
+
+    @media (max-width: 720px) {
+      .wrap { padding: 0 20px; }
+      .row { grid-template-columns: 1fr; gap: 14px; padding: 32px 0; }
+      .row:first-of-type { padding-top: 64px; }
+      .item h3 { flex-direction: column; gap: 0; }
+      .fold summary { float: none; width: auto; }
+      .portrait { width: 200px; }
+      .fold > div { margin-left: 0; margin-top: 18px; }
+    }
+  </style>
 </head>
 <body>
-  <main>
-    <!-- ───────────── Home: six tiles ───────────── -->
-    <section class="home" id="top" aria-label="Yuji Jones">
+  <div class="wrap">
 
-      <div class="tile t-mark">
-        <h1 class="visually-hidden">Yuji Jones</h1>
-        <a class="mark-link" href="#top" aria-label="Yuji Jones, home">
-          <svg class="mark" viewBox="0 0 300 190" aria-hidden="true" focusable="false">
-            <!-- one version of the name shows at a time; the switcher picks it -->
-            <g class="name is-on" data-name="en">
-              <!-- YUJI left-aligned with JONES; offsets line up the ink, since the J swash hangs left -->
-              <text x="-2.3" y="70" letter-spacing="4">YUJI</text>
-              <text x="8.6" y="170" textLength="300" lengthAdjust="spacing">JONES</text>
-            </g>
-            <g class="name name-jp" data-name="kanji" lang="ja">
-              <text x="150" y="81" text-anchor="middle">佐藤</text>
-              <text x="150" y="189" text-anchor="middle">結史</text>
-            </g>
-            <g class="name name-jp" data-name="kana" lang="ja">
-              <text x="150" y="81" text-anchor="middle">さとう</text>
-              <text x="150" y="181" text-anchor="middle">ゆうじ</text>
-            </g>
-          </svg>
-        </a>
-        <div class="mark-glow" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-        <canvas class="mark-pixels" id="markPixels" aria-hidden="true"></canvas>
-        <div class="name-switch">
-          <span class="name-label" id="nameLabel">English</span>
-          <span class="name-timer" aria-hidden="true"><i data-name="en"></i><i data-name="kanji"></i><i data-name="kana"></i></span>
-        </div>
-      </div>
-
-      <a class="tile t-resume" href="#resume">
-        <svg class="doodle" viewBox="0 0 300 300" aria-hidden="true" focusable="false"><path class="k" d="M72 62 Q138 49 198 45 Q205 138 216 228 Q150 239 90 247 Q80 152 72 62" pathLength="1" style="--i:0"/><path class="k" d="M95 76 Q118 71 142 69" pathLength="1" style="--i:1"/><path class="k" d="M96 100 Q140 93 182 90" pathLength="1" style="--i:2"/><path class="k" d="M98 124 Q132 120 172 117" pathLength="1" style="--i:3"/><path class="k" d="M100 148 Q142 144 186 140" pathLength="1" style="--i:4"/><path class="k" d="M102 172 Q126 170 152 168" pathLength="1" style="--i:5"/><path class="k" d="M103 196 Q140 192 176 190" pathLength="1" style="--i:6"/><path class="k" d="M212 196 C236 190 252 204 258 222 C265 242 262 262 250 284" pathLength="1" style="--i:7"/><path class="k" d="M214 212 C230 211 236 224 228 233" pathLength="1" style="--i:8"/><path class="k" d="M216 232 C232 233 236 246 226 254" pathLength="1" style="--i:9"/><path class="k" d="M196 268 C208 262 220 258 230 254" pathLength="1" style="--i:10"/><path class="r" d="M86 72 C96 50 162 46 160 70 C158 92 96 95 89 78 C84 66 112 57 136 59" pathLength="1" style="--i:11"/><path class="b" d="M168 166 L178 178 L204 142" pathLength="1" style="--i:12"/><path class="b" d="M178 116 L186 126 L206 100" pathLength="1" style="--i:13"/></svg>
-        <span class="t-label">Resume</span>
-        <span class="t-bottom">
-          <span class="more">View my resume <span class="arrow" aria-hidden="true"></span></span>
-        </span>
-      </a>
-
-      <a class="tile t-interests" href="#interests">
-        <svg class="doodle" viewBox="0 0 300 300" aria-hidden="true" focusable="false"><path class="k" d="M18 214 C60 202 96 190 128 176" pathLength="1" style="--i:0"/><path class="k" d="M30 246 C70 236 108 222 142 206" pathLength="1" style="--i:1"/><path class="k" d="M128 176 C142 168 160 172 165 186 C168 198 156 208 142 206" pathLength="1" style="--i:2"/><path class="k" d="M142 206 L150 214 M154 202 L163 208" pathLength="1" style="--i:3"/><path class="k" d="M205 108 C203 80 248 74 257 103 C266 132 228 150 211 134 C204 127 204 117 205 108" pathLength="1" style="--i:4"/><path class="k" d="M222 102 L234 93 L246 101 L241 115 L227 116 Z" pathLength="1" style="--i:5"/><path class="k" d="M222 102 L210 98 M246 101 L256 96 M241 115 L248 128 M227 116 L220 129 M234 93 L234 80" pathLength="1" style="--i:6"/><path class="r" d="M150 142 Q174 128 196 120" pathLength="1" style="--i:7"/><path class="r" d="M160 162 Q184 150 202 140" pathLength="1" style="--i:8"/><path class="r" d="M172 182 Q192 172 208 160" pathLength="1" style="--i:9"/><path class="b" d="M120 120 Q160 30 232 70" pathLength="1" style="--i:10"/><path class="b" d="M54 70 L104 52 L86 112 Z" pathLength="1" style="--i:11"/><path class="b" d="M64 76 Q78 72 96 64" pathLength="1" style="--i:12"/><path class="k" d="M62 78 C70 86 80 84 84 92 M78 70 m-3 0 a3 3 0 1 0 6 0 a3 3 0 1 0 -6 0" pathLength="1" style="--i:13"/></svg>
-        <span class="t-label">Interests</span>
-      </a>
-
-      <a class="tile t-photo t-about" href="#about">
-        <img src="assets/headshot.jpg" alt="Yuji Jones smiling, in a black blazer and white shirt" width="800" height="1200">
-        <span class="pill">About me</span>
-      </a>
-
-      <a class="tile t-projects" href="#projects">
-        <svg class="doodle" viewBox="0 0 300 300" aria-hidden="true" focusable="false"><path class="k" d="M112 72 Q113 59 125 59 L189 57 Q201 57 201 69 L205 220 Q205 232 193 232 L127 233 Q116 233 115 221 Z" pathLength="1" style="--i:0"/><path class="k" d="M124 88 L193 86 L195 160 L126 162 Z" pathLength="1" style="--i:1"/><path class="k" d="M128 152 L151 121 L166 141 L177 128 L193 150" pathLength="1" style="--i:2"/><path class="k" d="M178 104 m-7 0 a7 7 0 1 0 14 0 a7 7 0 1 0 -14 0" pathLength="1" style="--i:3"/><path class="k" d="M140 202 L178 200" pathLength="1" style="--i:4"/><path class="k" d="M114 196 C96 188 88 166 104 150 C110 144 116 146 116 154" pathLength="1" style="--i:5"/><path class="k" d="M205 150 C222 150 224 168 206 170" pathLength="1" style="--i:6"/><path class="k" d="M206 176 C226 178 225 196 206 198" pathLength="1" style="--i:7"/><path class="k" d="M110 232 C104 252 96 268 88 286" pathLength="1" style="--i:8"/><path class="k" d="M196 233 C204 252 210 268 214 286" pathLength="1" style="--i:9"/><path class="r" d="M236 74 C226 52 198 60 207 84 C213 98 230 108 237 118 C246 106 262 96 266 82 C272 60 246 52 236 74" pathLength="1" style="--i:10"/><path class="r" d="M224 82 C232 76 246 76 252 84" pathLength="1" style="--i:11"/><path class="b" d="M64 70 L66 112 M45 92 L86 90" pathLength="1" style="--i:12"/><path class="b" d="M246 150 L264 136" pathLength="1" style="--i:13"/><path class="b" d="M248 172 L272 174" pathLength="1" style="--i:14"/><path class="b" d="M244 194 L262 210" pathLength="1" style="--i:15"/></svg>
-        <span class="t-label">Projects</span>
-        <span class="t-bottom">
-          <span class="more">View my projects <span class="arrow" aria-hidden="true"></span></span>
-        </span>
-      </a>
-
-      <a class="tile t-values t-contact" href="#contact">
-        <svg class="doodle" viewBox="0 0 300 300" aria-hidden="true" focusable="false"><path class="k" d="M48 142 Q146 108 244 72 Q180 120 116 166 Q82 154 48 142" pathLength="1" style="--i:0"/><path class="k" d="M116 166 Q180 120 244 72 Q196 146 150 216 Q140 190 132 176 Z" pathLength="1" style="--i:1"/><path class="k" d="M116 166 L132 176" pathLength="1" style="--i:2"/><path class="k" d="M132 176 Q188 124 242 76" pathLength="1" style="--i:3"/><path class="k" d="M132 176 L128 198 L150 216" pathLength="1" style="--i:4"/><path class="r" d="M104 192 C86 204 66 200 62 216 C58 232 82 236 88 222 C94 208 70 204 62 220 C56 232 48 238 36 242" pathLength="1" style="--i:5"/><path class="b" d="M254 100 L280 94" pathLength="1" style="--i:6"/><path class="b" d="M246 122 L272 122" pathLength="1" style="--i:7"/><path class="b" d="M234 142 L256 150" pathLength="1" style="--i:8"/><path class="b" d="M40 74 C46 58 66 56 72 68 C78 56 98 58 98 74 C106 74 110 86 100 90 L44 92 C32 90 32 76 40 74 Z" pathLength="1" style="--i:9"/></svg>
-        <span class="t-label">Contact</span>
-        <span class="t-bottom">
-          <span class="more">Get in touch <span class="arrow" aria-hidden="true"></span></span>
-        </span>
-      </a>
-    </section>
-
-  </main>
-
-  <!-- Sections open in a panel that grows from the clicked tile; only the panel scrolls -->
-  <div class="ghost" id="ghost" hidden aria-hidden="true"></div>
-  <div class="hero" id="hero" aria-hidden="true"><img src="assets/headshot.jpg" alt="" width="800" height="1200"></div>
-  <aside class="panel" id="panel" aria-label="Section" aria-hidden="true" tabindex="-1">
-    <button class="panel-close" id="panelClose" type="button">Close <span aria-hidden="true">&times;</span></button>
-    <!-- ───────────── About me ───────────── -->
-    <section class="sec sec-white" id="about" aria-labelledby="about-h">
-      <h2 class="sec-label" id="about-h">About me</h2>
-      <div class="sec-body">
-        <p class="about-intro">Hi! My name is Yuji, and I’m a student at Claremont McKenna studying Economics and International Relations, with a Leadership Studies sequence. I’ve always been creatively driven, and I’m hoping to bring that curiosity into the growing age of AI and technology. What I love most about building is the chance to turn ideas into something real. Working both technically and creatively is becoming an essential skill set, and I want to be someone who can do both. I’m excited to keep learning, experimenting, and creating work that actually makes a difference. As AI continues to reshape how we work and create, I aim to build products and share ideas that put people and authenticity at the center.</p>
-        <dl class="facts">
-          <div><dt>Majors</dt><dd>Economics &amp; International Relations</dd></div>
-          <div><dt>Minor</dt><dd>Leadership Studies</dd></div>
-          <div><dt>Places I’ve lived</dt><dd>Beijing, Tokyo, Virginia Beach, Columbus (OH), NorCal (Foster City), SoCal (Claremont)</dd></div>
-        </dl>
-        <figure class="about-photo">
-          <figcaption class="photo-bubble">A picture of a beautiful sunset glowing behind my school’s campus!</figcaption>
-          <img src="assets/sunset.jpg" alt="Sunset over the Claremont McKenna campus, with yellow leaves in the foreground" width="1600" height="900" loading="lazy">
-        </figure>
-      </div>
-    </section>
-
-    <!-- ───────────── Resume ───────────── -->
-    <section class="sec sec-blue" id="resume" aria-labelledby="resume-h">
-      <h2 class="sec-label" id="resume-h">Resume</h2>
-      <div class="sec-body">
-        <dl class="rows">
-          <div class="row">
-            <dt>
-              Education
-              <img class="seal" src="assets/cmc-seal.png" alt="Claremont McKenna College seal" width="480" height="480" loading="lazy">
-            </dt>
-            <dd>
-              <p class="school"><strong>Claremont McKenna College</strong> <span class="school-dates">2023–2026</span></p>
-              <p>Economics &amp; International Relations (Leadership Studies sequence)</p>
-              <p class="dim">Graduating December 2026</p>
-              <p class="course-h">Relevant coursework</p>
-              <p class="courses">Corporate Finance · Microeconomics · Macroeconomics · Econometrics · Education Economics · International Economics · Foreign Relations of the U.S. · International Political Feature Writing · American Government · International Politics · Maps and Politics · Foundations of Leadership · Seminar: Becoming a Leader · Leadership and Persuasion</p>
-            </dd>
-          </div>
-          <div class="row">
-            <dt>Experience</dt>
-            <dd>
-              <div class="job job-static">
-                <p class="job-title">AI Agent Engineering Extern</p>
-                <p>Wayfair (via Extern) · Remote</p>
-                <p class="dim">July–August 2026</p>
-                <ul class="bullets">
-                  <li>Built 5 AI agents automating workflows, turning a two-word input into full rug market intelligence reports</li>
-                  <li>Researched trend analysis across the rug sector, identifying competitor pricing and patterns in consumer demand</li>
-                  <li>Created a 6-tab HTML dashboard consolidating four agents’ outputs into one interactive decision tool for Wayfair</li>
-                </ul>
-              </div>
-              <div class="job job-static gap">
-                <p class="job-title">Political Research &amp; Education Intern</p>
-                <p>The Suwandi Foundation · Bali, Indonesia</p>
-                <p class="dim">May–July 2025</p>
-                <ul class="bullets">
-                  <li>Authored a 20-page policy report on the USFP and colonial legacies in East Bali, presented for future interns</li>
-                  <li>Taught English lessons 4 days/week alongside teachers to 25 students at a local after-school learning center</li>
-                </ul>
-              </div>
-              <div class="job gap" role="button" tabindex="0" data-detail="d-gould" aria-label="Student Manager, Social Media and Publicity: see my work">
-                <p class="job-title"><a class="title-link" href="https://gouldcenter.org/yuji-jones-student-manager-2425" target="_blank" rel="noopener">Student Manager</a>, Social Media and Publicity</p>
-                <p>Gould Center for Humanistic Studies</p>
-                <p class="dim">2024–2025</p>
-                <ul class="bullets">
-                  <li>Grew Instagram by 30%, LinkedIn by 47% through social media outreach, producing 75+ posts with Canva Pro</li>
-                  <li>Sourced, interviewed and wrote digital content featuring 20+ faculty/student research and achievements</li>
-                  <li>Led 5 informational sessions for prospective and newly admitted students as ambassador for the Center</li>
-                </ul>
-                <span class="job-more">See my work <span class="arrow" aria-hidden="true"></span></span>
-              </div>
-              <a class="job gap" href="https://static1.squarespace.com/static/6350624e26a29514ddcf7b2a/t/66980bd5b6e8f361dee550e0/1721240533638/Yuji+Jones+Named+Fellowship+Paper_Summer24.pdf" target="_blank" rel="noopener" aria-label="Keck Summer Fellow in Comparative Politics: read my paper (PDF, new tab)">
-                <p class="job-title">Keck Summer Fellow in Comparative Politics</p>
-                <p>Keck Center for International and Strategic Studies · Claremont, California</p>
-                <p class="dim">June–August 2024</p>
-                <ul class="bullets">
-                  <li>Authored a 25-page research paper analyzing economic cost overruns and profitability of the Olympic Games</li>
-                  <li>Synthesized 48 sources and books; proposed 4 recommendations to mitigate future socio-economic challenges</li>
-                  <li>Published research on the Keck Center website, contributing to the Center’s public scholarship</li>
-                </ul>
-                <span class="job-more">Read my paper <span class="arrow" aria-hidden="true"></span></span>
-              </a>
-            </dd>
-          </div>
-
-          <div class="row row-stacked" id="leadership-row">
-            <dt>Leadership &amp; Activities</dt>
-            <dd>
-              <ul class="lead-list">
-                <li><span class="lead-what"><strong>Mentor</strong>, Asian Pacific American Mentorship Program, Claremont McKenna College</span><span class="lead-when">Aug 2025 – Present</span></li>
-                <li><span class="lead-what"><strong>First-Year Guide</strong>, Dean of Students, Claremont McKenna College</span><span class="lead-when">Aug 2024 – Present</span></li>
-                <li><span class="lead-what"><strong>Senior Class Cabinet</strong>, Dean of Students, Claremont McKenna College</span><span class="lead-when">Jan 2026 – May 2026</span></li>
-                <li><span class="lead-what"><strong>Student Manager</strong>, Gould Center for Humanistic Studies, Claremont McKenna College</span><span class="lead-when">Apr 2024 – May 2025</span></li>
-                <li><span class="lead-what"><strong>Podcast Host</strong>, Keck Center for International and Strategic Studies, Claremont McKenna College</span><span class="lead-when">Jan 2024 – May 2024</span></li>
-              </ul>
-            </dd>
-          </div>
-          <div class="row">
-            <dt>Languages</dt>
-            <dd>
-              <ul class="skills">
-                <li><strong>English</strong> <span class="dim">Native</span></li>
-                <li><strong>Japanese</strong> <span class="dim">Intermediate</span></li>
-                <li><strong>French</strong> <span class="dim">Limited</span></li>
-              </ul>
-            </dd>
-          </div>
-          <div class="row">
-            <dt>Technical Skills</dt>
-            <dd>
-              <ul class="tags">
-                <li>Python</li><li>Java</li><li>n8n</li><li>Prompt Engineering</li><li>Workflow Automation</li>
-                <li>Excel</li><li>PowerPoint</li><li>Google Suite</li><li>Canva</li><li>Social Media Platforms</li><li>Video Editing</li>
-              </ul>
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </section>
-
-    <!-- ───────────── Projects ───────────── -->
-    <section class="sec sec-orange" id="projects" aria-labelledby="projects-h">
-      <h2 class="sec-label" id="projects-h">Projects</h2>
-      <div class="sec-body">
-        <div class="groups" role="list" aria-label="Project groups">
-          <button type="button" class="group g-code" role="listitem" data-detail="g-github">
-            <span class="group-name">GitHub</span>
-            <span class="group-note">Code, sites, and AI agents I’ve built</span>
-            <span class="arrow" aria-hidden="true"></span>
-          </button>
-          <button type="button" class="group g-pen" role="listitem" data-detail="g-writing">
-            <span class="group-name">Writing Assignments</span>
-            <span class="group-note">From class write-ups to my senior thesis</span>
-            <span class="arrow" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ───────────── Interests ───────────── -->
-    <section class="sec sec-red" id="interests" aria-labelledby="interests-h">
-      <h2 class="sec-label" id="interests-h">Interests</h2>
-      <div class="sec-body">
-        <ul class="interests">
-          <li><span class="i-name">Football</span><span class="i-note">Built an unofficial scroll story about Chelsea FC’s first team.</span></li>
-          <li><span class="i-name">Baseball</span><span class="i-note">Made a fan site following Shohei Ohtani from Iwate to the World Series.</span></li>
-          <li><span class="i-name">Geopolitics</span><span class="i-note">Wrote my senior thesis on Indonesia’s capital moving to Nusantara.</span></li>
-          <li><span class="i-name">The Olympics</span><span class="i-note">Researched the economics of hosting as a Keck Fellow.</span></li>
-          <li><span class="i-name">Design</span><span class="i-note">Made all the graphics and captions for my Gould Center posts.</span></li>
-          <li><span class="i-name">Pizza</span><span class="i-note">Designed a website and ordering flow for a pizzeria.</span></li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- ───────────── Contact ───────────── -->
-    <section class="sec sec-gold sec-contact" id="contact" aria-labelledby="contact-h">
-      <h2 class="sec-label" id="contact-h">Contact</h2>
-      <div class="sec-body">
-        <ul class="contact-list">
-          <li><a href="mailto:yjones42@cmc.edu"><svg class="c-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg><span>yjones42@cmc.edu</span></a></li>
-          <li><a href="https://www.linkedin.com/in/yuji-jones" rel="me noopener" target="_blank"><svg class="c-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="24" height="24" rx="4" fill="#0A66C2"/><circle cx="6.5" cy="6.6" r="1.9" fill="#fff"/><rect x="4.8" y="9.3" width="3.4" height="9.9" fill="#fff"/><path fill="#fff" d="M10.6 9.3h3.2v1.4c.5-.9 1.7-1.7 3.4-1.7 3.3 0 3.9 2.1 3.9 4.9v5.3h-3.4v-4.7c0-1.2 0-2.6-1.6-2.6s-1.9 1.2-1.9 2.5v4.8h-3.6z"/></svg><span>linkedin.com/in/yuji-jones</span></a></li>
-          <!-- GitHub: fill in the profile link, then remove "hidden" -->
-          <li><a href="https://github.com/yujijones4" rel="me noopener" target="_blank"><svg class="c-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="#181717" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><span>github.com/yujijones4</span></a></li>
-        </ul>
-      </div>
-    </section>
-  </aside>
-
-  <!-- A second box that opens over a panel for one job or project group -->
-  <aside class="detail" id="detail" aria-hidden="true" aria-label="Details" tabindex="-1">
-    <button class="detail-back" id="detailBack" type="button"><span class="arrow back" aria-hidden="true"></span> Back</button>
-    <div class="detail-body" id="detailBody"></div>
-  </aside>
-  <div hidden>
-    <template id="d-wayfair">
-      <p class="detail-kicker">Resume · Experience</p>
-      <h3 class="detail-title">AI Agent Engineering Extern</h3>
-      <p>Wayfair (via Extern) · Remote</p>
-      <p class="dim">July–August 2026</p>
-      <ul class="bullets">
-        <li>Built 5 AI agents automating workflows, turning a two-word input into full rug market intelligence reports</li>
-        <li>Researched trend analysis across the rug sector, identifying competitor pricing and patterns in consumer demand</li>
-        <li>Created a 6-tab HTML dashboard consolidating four agents’ outputs into one interactive decision tool for Wayfair</li>
-      </ul>
-      <!-- Output hidden until there's real work to show. Restore with:
-      <h4 class="detail-h">Output</h4>
-      <ul class="out-slots"><li>Add a screenshot</li><li>Add a link or file</li><li>Add a photo</li></ul>
-      -->
-    </template>
-    <template id="d-suwandi">
-      <p class="detail-kicker">Resume · Experience</p>
-      <h3 class="detail-title">Political Research &amp; Education Intern</h3>
-      <p>The Suwandi Foundation · Bali, Indonesia</p>
-      <p class="dim">May–July 2025</p>
-      <ul class="bullets">
-        <li>Authored a 20-page policy report on the USFP and colonial legacies in East Bali, presented for future interns</li>
-        <li>Taught English lessons 4 days/week alongside teachers to 25 students at a local after-school learning center</li>
-      </ul>
-      <!-- Output hidden until there's real work to show. Restore with:
-      <h4 class="detail-h">Output</h4>
-      <ul class="out-slots"><li>Add a screenshot</li><li>Add a link or file</li><li>Add a photo</li></ul>
-      -->
-    </template>
-    <template id="d-gould">
-      <p class="detail-kicker">Resume · Experience</p>
-      <h3 class="detail-title">Student Manager, Social Media and Publicity</h3>
-      <p class="detail-lead">As Student Manager, my goal wasn’t to gain followers or boost views. It was to build engagement among CMC students, faculty, and alumni by showcasing the work our students created at the Gould Center for Humanistic Studies. I did this by putting the faces of CMC students and faculty front and center, and by extending that engagement through Reels.</p>
-      <h4 class="detail-h">Output</h4>
-      <h5 class="out-h">Posts I designed and wrote</h5>
-      <ul class="media posts">
-            <li><img src="assets/work/post-research-spotlight.jpg" alt="Instagram post: Faculty Research Spotlight" width="432" height="432" loading="lazy"></li>
-            <li><img src="assets/work/post-book-reception-1.jpg" alt="Instagram post: Faculty Book Reception announcement" width="432" height="432" loading="lazy"></li>
-            <li><img src="assets/work/post-book-reception-2.jpg" alt="Instagram post: a second Faculty Book Reception announcement" width="432" height="432" loading="lazy"></li>
-            <li><img src="assets/work/post-research-highlight.jpg" alt="Instagram post: Faculty Research Highlight" width="432" height="432" loading="lazy"></li>
-            <li><img src="assets/work/post-gouldie-spotlight.jpg" alt="Instagram post: Gouldie Spotlight on a student" width="432" height="432" loading="lazy"></li>
-            <li><img src="assets/work/post-gould-fellow.jpg" alt="Instagram post: Fellow Friday, introducing a Gould Center Fellow" width="432" height="432" loading="lazy"></li>
-            <li><img src="assets/work/post-manager-monday.jpg" alt="Instagram post: Manager Monday, introducing a student manager" width="432" height="432" loading="lazy"></li>
-          </ul>
-      <h5 class="out-h">Follower growth</h5>
-      <p>Instagram grew <strong>30%</strong> and LinkedIn <strong>47%</strong>.</p>
-      <div class="media"><img src="assets/work/growth-charts.jpg" alt="Two charts for Fall 2024 to Spring 2025. Instagram followers rose from 737 to 800 to 962. LinkedIn followers rose from 212 to 228 to 311." width="1717" height="804" loading="lazy"></div>
-      <h5 class="out-h">Best performing posts</h5>
-      <p>Gould Center Fellow posts averaged 30 likes; my first one drew 71 likes and 19 comments.</p>
-      <ul class="media shots">
-            <li style="--r:.626"><img src="assets/work/best-1.jpg" alt="Instagram screenshot of the first Gould Center Fellow post, with 71 likes and 19 comments" width="641" height="1024" loading="lazy"></li>
-            <li style="--r:.462"><img src="assets/work/best-2.jpg" alt="Instagram screenshot of the comments on that post" width="473" height="1024" loading="lazy"></li>
-            <li style="--r:.579"><img src="assets/work/best-3.jpg" alt="Instagram screenshot of a Faculty Research Spotlight post with its likes and comments" width="593" height="1024" loading="lazy"></li>
-            <li style="--r:.589"><img src="assets/work/best-4.jpg" alt="Instagram screenshot of a post announcing the Gould Center’s 2024 American Philosophical Association award" width="603" height="1024" loading="lazy"></li>
-          </ul>
-      <h5 class="out-h">Winter Passion Project series</h5>
-      <p>These posts averaged <strong>2,400 views</strong>.</p>
-      <div class="media"><img src="assets/work/metrics-grid.jpg" alt="Instagram grid of six Winter Passion Project posts with view counts between 1,248 and 3,338" width="1161" height="774" loading="lazy"></div>
-      <h5 class="out-h">Reels</h5>
-      <ul class="media reels">
-            <li><img src="assets/work/reel-1.jpg" alt="Reel still: a mock trial on AI and the humanities, held over dinner" width="720" height="1280" loading="lazy"></li>
-            <li><img src="assets/work/reel-2.jpg" alt="Reel still: students walking into a gallery on a Gould Center visit" width="720" height="1280" loading="lazy"></li>
-            <li><img src="assets/work/reel-3.jpg" alt="Reel still: question marks above a book" width="720" height="1280" loading="lazy"></li>
-            <li><img src="assets/work/reel-4.jpg" alt="Reel still: the mock trial ends with an audience vote" width="712" height="1280" loading="lazy"></li>
-          </ul>
-    </template>
-    <template id="g-github">
-      <p class="detail-kicker">Projects</p>
-      <h3 class="detail-title">GitHub</h3>
-      <p>Code, sites, and AI agents I’ve built.</p>
-      <article class="proj">
-        <div class="proj-text">
-          <h4 class="proj-name">Chelsea FC Fan Site</h4>
-          <p class="proj-note">An unofficial, fan-made scrollytelling portrait of the Chelsea FC 2026/27 first team.</p>
-          <p class="proj-links"><a href="https://yujijones4.github.io/ChelseaFC-FanMade-Site/" target="_blank" rel="noopener">Visit the site</a> <a href="https://github.com/yujijones4/ChelseaFC-FanMade-Site" target="_blank" rel="noopener">View the code</a></p>
-        </div>
-        <div class="peek">
-          <div class="peek-screen">
-            <!-- the live site, scaled down; it starts once the box has opened -->
-            <iframe data-src="https://yujijones4.github.io/ChelseaFC-FanMade-Site/" title="Preview of the Chelsea FC fan site's opening" tabindex="-1" scrolling="no" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe>
-            <a class="peek-link" href="https://yujijones4.github.io/ChelseaFC-FanMade-Site/" target="_blank" rel="noopener" aria-label="Open the Chelsea FC fan site"></a>
-          </div>
-          <button type="button" class="peek-replay">Replay <span aria-hidden="true">↻</span></button>
-        </div>
-      </article>
-      <article class="proj">
-        <div class="proj-text">
-          <h4 class="proj-name">Online Pizza Store</h4>
-          <p class="proj-note">A website for a fictional pizza shop, with a menu and ordering flow. My first site built with Claude.</p>
-          <p class="proj-links"><a href="https://yujijones4.github.io/Pizzeria-Website/" target="_blank" rel="noopener">Visit the site</a> <a href="https://github.com/yujijones4/Pizzeria-Website" target="_blank" rel="noopener">View the code</a></p>
-        </div>
-        <div class="peek">
-          <div class="peek-screen">
-            <!-- the live site, scaled down; it starts once the box has opened -->
-            <iframe data-src="https://yujijones4.github.io/Pizzeria-Website/" title="Preview of the online pizza store's opening" tabindex="-1" scrolling="no" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer"></iframe>
-            <a class="peek-link" href="https://yujijones4.github.io/Pizzeria-Website/" target="_blank" rel="noopener" aria-label="Open the online pizza store"></a>
-          </div>
-          <button type="button" class="peek-replay">Replay <span aria-hidden="true">↻</span></button>
-        </div>
-      </article>
-      <p class="proj-all"><a href="https://github.com/yujijones4" target="_blank" rel="me noopener">See everything on GitHub <span class="arrow" aria-hidden="true"></span></a></p>
-    </template>
-    <template id="g-writing">
-      <p class="detail-kicker">Projects</p>
-      <h3 class="detail-title">Writing Assignments</h3>
-      <dl class="works papers">
-            <div>
-              <dt>Senior Thesis</dt>
-              <dd><a href="https://scholarship.claremont.edu/cgi/viewcontent.cgi?article=5323&amp;context=cmc_theses" target="_blank" rel="noopener">Sinking City to Breakthrough City: A Political Analysis and Evaluation of Indonesia’s Capital City Relocation from Jakarta to Nusantara</a></dd>
-            </div>
-            <div>
-              <dt>Keck Fellow in Comparative Politics</dt>
-              <dd><a href="https://static1.squarespace.com/static/6350624e26a29514ddcf7b2a/t/66980bd5b6e8f361dee550e0/1721240533638/Yuji+Jones+Named+Fellowship+Paper_Summer24.pdf" target="_blank" rel="noopener">The Economic Angles of Hosting the Olympics in the 21st Century: A Closer Look from the Athens, Montréal, Rio de Janeiro, and Sochi Olympics</a></dd>
-            </div>
-            <div>
-              <dt>Class write-ups</dt>
-              <dd><a href="https://docs.google.com/document/d/1cwpzZmsdtXWjJTcs5BO1tvZKtxYLbR_XRu67aRhsgf8/edit?usp=sharing" target="_blank" rel="noopener">Australia leads way to protect children’s mental health through social media bans</a></dd>
-              <dd><a href="https://docs.google.com/document/d/1wfFIPJ28OOVTw9DPrIxYEzTu22Y4vV9lwO-G2H83k1s/edit?usp=sharing" target="_blank" rel="noopener">Three countries make striking votes in UN resolution on slavery</a></dd>
-              <!-- Hidden until it has its real title (and the doc is shared as "Anyone with the link"):
-              <dd><a href="https://docs.google.com/document/d/1j-UMHDJ-nOZyAVUYLKL8909N6eT58yXFzMHLMbjGaQI/edit?usp=sharing" target="_blank" rel="noopener">[Title of the new write-up]</a></dd>
-              -->
-            </div>
-          </dl>
-    </template>
-  </div>
-
-  <!-- Fixed bar along the bottom, as on the reference -->
-  <header class="bar">
-    <a class="bar-name" href="#top"><b>Yuji Jones</b></a>
-    <nav class="bar-nav" id="barNav" aria-label="Sections">
-      <a href="assets/Yuji-Jones-Resume.pdf" target="_blank" rel="noopener">Resume</a>
-      <a href="#contact">Contact</a>
+    <nav>
+      <a class="brand" href="#">Yuji Jones</a>
+      <a class="ext resume" href="assets/Yuji-Jones-Resume.pdf" target="_blank" rel="noopener">Resume</a>
     </nav>
-  </header>
 
-  <svg class="doodle-defs" width="0" height="0" aria-hidden="true" focusable="false">
-    <filter id="crayon" x="-10%" y="-10%" width="120%" height="120%">
-      <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="4" result="wob"/>
-      <feDisplacementMap in="SourceGraphic" in2="wob" scale="9" xChannelSelector="R" yChannelSelector="G" result="d"/>
-      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="1" seed="9" result="grain"/>
-      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3.2 2.3" result="ga"/>
-      <feComposite in="d" in2="ga" operator="in"/>
-    </filter>
-  </svg>
+    <main>
+      <!-- About -->
+      <section class="row" id="about">
+        <figure class="portrait">
+          <img src="assets/headshot.jpg" alt="Headshot of Yuji Jones">
+          <figcaption>Yuji Jones</figcaption>
+        </figure>
+        <div class="intro">
+          <p>Hey! I’m Yuji Jones, a senior at Claremont McKenna College graduating this December.</p>
+          <p>In college, I spent most of my time in the research and academic world: fellowships with professors, nonprofit work in rural Indonesia, and social media for the Gould Center, CMC’s humanities institute. Looking back, I noticed a pattern: whether it was an online presence, media engagement, or the policy behind a problem, I kept trying to make things work better.</p>
+          <p>That’s what pulled me toward building. Lately that means AI agents and websites, the kind of work that turns an idea into something real.</p>
+          <p>When I’m not deep in Claude Code, you’ll probably find me dominating at intramurals (I’ve only won one championship out of 23), mixing songs on my FLX4 DJ board in my bedroom, or hanging out with friends. Curious what I’ve been building? Take a look around!</p>
+        </div>
+      </section>
 
-  <script src="main.js?v=34" defer></script>
+      <!-- Education -->
+      <details class="fold" id="education">
+        <summary class="label">Education</summary>
+        <div>
+          <div class="item">
+            <h3><span class="cmc">Claremont McKenna College</span> <span class="when">2023 – 2026</span></h3>
+            <div class="where">Economics &amp; International Relations · Leadership Studies sequence</div>
+            <p><b>Courses I’ve taken:</b> Corporate Finance, Econometrics, International Economics, Economics of Education, Macro/Microeconomics, Foreign Relations of the U.S., Maps and Politics, Security Studies, Middle Eastern Politics, Hist/Glob of Soccer, Leadership and Persuasion, Seminar in Leadership: Becoming a Leader</p>
+          </div>
+        </div>
+      </details>
+
+      <!-- Experience -->
+      <details class="fold" id="experience">
+        <summary class="label">Experience</summary>
+        <div>
+          <div class="item">
+            <h3>AI Agent Engineering Extern <span class="when">Jul – Aug 2026</span></h3>
+            <div class="where">Wayfair, via Extern · Remote</div>
+            <p>Built 5 AI agents that turn a two-word input into a full rug market intelligence report, plus a 6-tab dashboard that pulls their output into one decision tool.</p>
+          </div>
+          <div class="item">
+            <h3>Political Research &amp; Education Intern <span class="when">May – Jul 2025</span></h3>
+            <div class="where">The Suwandi Foundation · Bali, Indonesia</div>
+            <p>Wrote a 20-page policy report on colonial legacies in East Bali, and taught English to 25 students four days a week.</p>
+          </div>
+          <div class="item">
+            <h3>Student Manager, Social Media &amp; Publicity <span class="when">Aug 2024 – May 2025</span></h3>
+            <div class="where">Gould Center for Humanistic Studies</div>
+            <p>Grew Instagram 30% and LinkedIn 47% across 75+ posts featuring student and faculty research.</p>
+            <div class="links">
+              <a class="ext" href="https://gouldcenter.org/yuji-jones-student-manager-2425" target="_blank" rel="noopener">See my work</a>
+            </div>
+          </div>
+          <div class="item">
+            <h3>Keck Summer Fellow in Comparative Politics <span class="when">Jun – Aug 2024</span></h3>
+            <div class="where">Keck Center for International &amp; Strategic Studies</div>
+            <p>A 25-page paper on the cost overruns and profitability of the Olympic Games, published by the Center.</p>
+            <div class="links">
+              <a class="ext" href="https://static1.squarespace.com/static/6350624e26a29514ddcf7b2a/t/66980bd5b6e8f361dee550e0/1721240533638/Yuji+Jones+Named+Fellowship+Paper_Summer24.pdf" target="_blank" rel="noopener">Read my paper</a>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Projects -->
+      <details class="fold" id="projects">
+        <summary class="label">Projects</summary>
+        <div>
+          <div class="item">
+            <h3>Jakarta Flood Map</h3>
+            <p>An ArcGIS model of Jakarta’s kampungs, waterways and luxury hotels, showing that the people living closest to the floods are the ones the government has left behind.</p>
+            <div class="links">
+              <a class="ext" href="assets/jakarta-flood-presentation.pdf" target="_blank" rel="noopener">View presentation</a>
+            </div>
+          </div>
+          <div class="item">
+            <h3>Chelsea FC Fan Site</h3>
+            <p>A fan-made scrollytelling website of my favorite soccer team, Chelsea.</p>
+            <div class="links">
+              <a class="ext" href="https://yujijones4.github.io/ChelseaFC-FanMade-Site/" target="_blank" rel="noopener">Visit</a>
+              <a class="ext" href="https://github.com/yujijones4/ChelseaFC-FanMade-Site" target="_blank" rel="noopener">Code</a>
+            </div>
+          </div>
+          <div class="item">
+            <h3>Online Pizza Store</h3>
+            <p>A website for a fictional pizza shop, with a menu and ordering flow. My first site built with Claude.</p>
+            <div class="links">
+              <a class="ext" href="https://yujijones4.github.io/Pizzeria-Website/" target="_blank" rel="noopener">Visit</a>
+              <a class="ext" href="https://github.com/yujijones4/Pizzeria-Website" target="_blank" rel="noopener">Code</a>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Fun facts -->
+      <details class="fold" id="fun-facts">
+        <summary class="label">Fun facts</summary>
+        <div>
+          <ul class="facts">
+            <li>I’ve lived in <b>six places</b>: Beijing, Tokyo, Virginia Beach, Columbus, Foster City (NorCal) and Claremont (SoCal).</li>
+            <li>I played the <b>clarinet</b> from 4th–8th grade, then switched to the <b>tuba</b> for 9th–12th.</li>
+            <li>Before college, I moved schools <b>nine times</b>.</li>
+            <li>I’m <b>right-handed</b> at every sport except frisbee, and I write with my <b>left</b>.</li>
+            <li>I have the <b>rarest birthday</b> in the world.</li>
+            <li>I’m a <b>bedroom DJ</b>. I like to mix house, tech house, rap, EDM and white-girl music.</li>
+          </ul>
+        </div>
+      </details>
+
+    </main>
+
+    <footer>
+      <a class="email" href="mailto:yjones42@cmc.edu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+        <span>yjones42@cmc.edu</span>
+      </a>
+      <div class="social">
+        <a href="https://www.linkedin.com/in/yuji-jones" target="_blank" rel="me noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
+        </a>
+        <a href="https://github.com/yujijones4" target="_blank" rel="me noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3"/></svg>
+        </a>
+      </div>
+    </footer>
+
+  </div>
+  <script>
+    // Sections open and close with a slow slide. Opening one closes any other.
+    var DURATION = 700;
+    var EASE = 'cubic-bezier(.45, 0, .2, 1)';
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var folds = Array.prototype.slice.call(document.querySelectorAll('details.fold'));
+
+    function stop(d) {
+      if (d._anim) { d._anim.cancel(); d._anim = null; }
+    }
+    function slide(d, from, to, done) {
+      d.style.overflow = 'hidden';
+      var a = d.animate({ height: [from + 'px', to + 'px'] },
+                        { duration: reduce ? 0 : DURATION, easing: EASE });
+      d._anim = a;
+      a.onfinish = function () {
+        d._anim = null;
+        d.style.overflow = '';
+        if (done) done();
+      };
+    }
+    function openFold(d) {
+      var from = d.offsetHeight;
+      stop(d);
+      d._closing = false;
+      d.classList.add('is-open');
+      d.open = true;
+      var to = d.offsetHeight;
+      slide(d, from, to);
+      var body = d.querySelector(':scope > div');
+      if (body && !reduce) body.animate({ opacity: [0, 1] }, { duration: DURATION, easing: 'ease' });
+    }
+    function closeFold(d) {
+      var from = d.offsetHeight;
+      stop(d);
+      d._closing = true;
+      d.classList.remove('is-open');
+      d.open = false;
+      var to = d.offsetHeight;
+      d.open = true;
+      slide(d, from, to, function () { d.open = false; d._closing = false; });
+    }
+
+    folds.forEach(function (d) {
+      d.querySelector('summary').addEventListener('click', function (e) {
+        e.preventDefault();
+        if (d.open && !d._closing) {
+          closeFold(d);
+        } else {
+          folds.forEach(function (o) { if (o !== d && o.open && !o._closing) closeFold(o); });
+          openFold(d);
+        }
+      });
+    });
+
+    // Arriving with a link like #projects opens that section right away
+    var target = location.hash && document.getElementById(location.hash.slice(1));
+    if (target && target.matches('details.fold')) {
+      target.open = true;
+      target.classList.add('is-open');
+    }
+  </script>
 </body>
 </html>
