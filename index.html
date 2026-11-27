@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yuji Jones</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <meta name="description" content="Yuji Jones, a senior at Claremont McKenna College studying Economics and International Relations.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,9 +33,48 @@
 
     /* Top bar */
     nav {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 28px 0;
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+      padding: 28px 0; position: relative; z-index: 5;
     }
+    nav .brand { justify-self: start; }
+    nav .resume { justify-self: end; }
+
+    /* Contact icons in the middle of the header; clicking one drops down its link */
+    .contacts { position: relative; display: flex; gap: 6px; }
+    .contact {
+      display: grid; place-items: center; width: 34px; height: 34px; padding: 0;
+      border: 1px solid transparent; border-radius: 8px; background: none; cursor: pointer;
+      transition: background-color .15s, border-color .15s;
+    }
+    .contact svg { width: 18px; height: 18px; display: block; fill: currentColor; }
+    .contact.linkedin { color: #0a66c2; }
+    .contact.github { color: #181717; }
+    .contact:hover { background: #f6f6f6; }
+    .contact[aria-expanded="true"] { background: #f6f6f6; border-color: var(--line); }
+    .contact:focus-visible { outline: 2px solid #0a66c2; outline-offset: 2px; }
+    .contact-pop {
+      position: absolute; top: calc(100% + 12px); left: 0;
+      display: flex; align-items: center; gap: 12px; white-space: nowrap;
+      padding: 9px 10px 9px 14px; font-size: 13px;
+      background: #fff; border: 1px solid var(--line); border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+      opacity: 0; transform: translateY(-4px);
+      transition: opacity .18s ease, transform .18s ease, left .22s cubic-bezier(.2,.7,.2,1);
+    }
+    .contact-pop.show { opacity: 1; transform: none; }
+    .contact-pop::before {
+      content: ""; position: absolute; top: -6px; left: var(--caret, 50%); width: 10px; height: 10px;
+      margin-left: -5px; background: #fff; border-left: 1px solid var(--line); border-top: 1px solid var(--line);
+      transform: rotate(45deg);
+    }
+    .pop-link { font-weight: 500; border-bottom: 1px solid var(--line); transition: border-color .15s; }
+    .pop-link:hover { color: var(--ink); border-color: var(--ink); }
+    .pop-copy {
+      font: inherit; font-size: 12px; color: var(--muted); cursor: pointer;
+      background: #f6f6f6; border: 0; border-radius: 5px; padding: 3px 8px; transition: color .15s;
+    }
+    .pop-copy:hover { color: var(--ink); }
+    main { border-bottom: 1px solid var(--line); margin-bottom: 72px; }
     nav a { font-weight: 500; transition: color .15s; }
     nav a:hover { color: var(--muted); }
 
@@ -82,7 +123,12 @@
 
     .intro p { color: var(--muted); max-width: 56ch; }
     .intro p + p { margin-top: 12px; }
-    @media (min-width: 721px) { .intro { margin-top: -7px; } } /* line up the first line of text with the top of the photo */
+    .intro p:first-child { display: flow-root; margin-bottom: 22px; }
+    .dropcap {
+      float: left; font-size: 46px; line-height: 34px; font-weight: 500; color: var(--ink);
+      letter-spacing: -0.02em; margin: 5px 10px 0 -2px;
+    }
+    @media (min-width: 721px) { .intro { margin-top: -7px; } .portrait { margin-left: 70px; } } /* line up the first line of text with the top of the photo */
     .links { display: flex; gap: 18px; margin-top: 18px; }
 
     .item + .item { margin-top: 28px; }
@@ -94,12 +140,59 @@
     .item .where { color: var(--ink); opacity: .55; font-size: 13px; }
     .item p { color: var(--muted); font-size: 13px; margin-top: 4px; max-width: 60ch; }
     .cmc { color: #981a31; }
+    .intro b { color: var(--ink); font-weight: 600; }
     .item p b { color: var(--ink); font-weight: 500; }
     .item .links { margin-top: 6px; font-size: 13px; }
+    .resume-link { margin-top: 28px; font-size: 13px; }
+    .project { display: grid; grid-template-columns: 168px 1fr; gap: 22px; align-items: start; }
+    .thumb { display: block; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); }
+    .thumb img, .thumb video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+    .thumb:hover img, .thumb:hover video { transform: scale(1.04); }
 
     .ext { border-bottom: 1px solid var(--line); transition: border-color .15s; }
     .ext:hover { border-color: var(--ink); }
     .ext::after { content: " \2197"; color: var(--muted); }
+    /* "See my work" pop-up for the Gould Center job */
+    button.ext { font: inherit; color: inherit; background: none; border: 0; border-bottom: 1px solid var(--line); padding: 0; cursor: pointer; }
+    button.ext:hover { border-color: var(--ink); }
+    .see-work::after { content: none; }
+    .work-modal {
+      margin: auto; border: 0; padding: 0; border-radius: 10px; background: #fff; color: var(--ink);
+      width: calc(100% - 32px); max-width: 620px; max-height: calc(100vh - 48px); overflow: auto;
+      box-shadow: 0 24px 64px rgba(0,0,0,.18);
+    }
+    .work-modal::backdrop { background: rgba(17,17,17,.38); backdrop-filter: blur(2px); }
+    .work-modal[open] { animation: wm-in .26s cubic-bezier(.2,.7,.2,1); }
+    .work-modal[open]::backdrop { animation: wm-fade .26s ease; }
+    .work-modal.closing { animation: wm-out .16s ease forwards; }
+    .work-modal.closing::backdrop { animation: wm-fade .16s ease reverse forwards; }
+    @keyframes wm-in { from { opacity: 0; transform: translateY(10px) scale(.98); } }
+    @keyframes wm-out { to { opacity: 0; transform: translateY(6px) scale(.985); } }
+    @keyframes wm-fade { from { opacity: 0; } }
+    .wm-body { padding: 24px; }
+    .wm-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+    .wm-head h4 { font-size: 14px; font-weight: 500; }
+    .wm-head p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .wm-close {
+      flex: none; width: 30px; height: 30px; margin: -4px -6px 0 0; border: 0; border-radius: 8px;
+      background: none; font-size: 22px; line-height: 1; color: var(--muted); cursor: pointer; transition: background-color .15s, color .15s;
+    }
+    .wm-close:hover { background: #f6f6f6; color: var(--ink); }
+    .wm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .wm-grid img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 4px; background: var(--line); }
+    .wm-label { font-size: 12px; font-weight: 500; color: var(--muted); margin: 0 0 8px; }
+    .wm-grid + .wm-label { margin-top: 18px; }
+    .wm-reels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .wm-reels video { display: block; width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 4px; background: var(--line); }
+    .wm-stats { font-size: 13px; color: var(--muted); margin-top: 16px; }
+    .wm-stats b { color: var(--ink); font-weight: 500; }
+    html.modal-open { overflow: hidden; }
+    @media (max-width: 720px) {
+      .wm-body { padding: 18px; }
+      .wm-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .wm-reels { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .work-modal[open], .work-modal.closing, .work-modal::backdrop { animation: none !important; } }
 
     .facts { list-style: none; }
     .facts li { color: var(--muted); padding-left: 16px; position: relative; }
@@ -107,18 +200,16 @@
     .facts li::before { content: "\2013"; position: absolute; left: 0; color: var(--ink); }
     .facts b { color: var(--ink); font-weight: 500; }
 
-    footer {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 28px 0 36px; border-top: 1px solid var(--line);
+
+    /* Character animation in the side margins (wide screens only) */
+    .wrap { position: relative; z-index: 1; }
+    .margin-art {
+      position: fixed; top: 0; height: 100vh; display: none; pointer-events: none;
+      width: min(calc((100vw - 1040px) / 2), 340px);
     }
-    footer .social { display: flex; gap: 16px; margin-left: auto; }
-    footer .social a { display: block; color: var(--ink); transition: opacity .15s; }
-    footer .social a:hover { opacity: .5; }
-    footer .email { display: flex; align-items: center; gap: 10px; transition: opacity .15s; }
-    footer .email:hover { opacity: .5; }
-    footer .social a.linkedin { color: #0a66c2; }
-    footer .social a.github { color: #181717; }
-    footer svg { width: 18px; height: 18px; display: block; fill: currentColor; }
+    .margin-art.left { left: 0; -webkit-mask-image: linear-gradient(to right, #000 55%, transparent); mask-image: linear-gradient(to right, #000 55%, transparent); }
+    .margin-art.right { right: 0; -webkit-mask-image: linear-gradient(to left, #000 55%, transparent); mask-image: linear-gradient(to left, #000 55%, transparent); }
+    @media (min-width: 1220px) { .margin-art { display: block; } }
 
     @media (max-width: 720px) {
       .wrap { padding: 0 20px; }
@@ -127,15 +218,30 @@
       .item h3 { flex-direction: column; gap: 0; }
       .fold summary { float: none; width: auto; }
       .portrait { width: 200px; }
+      .project { grid-template-columns: 112px 1fr; gap: 14px; }
       .fold > div { margin-left: 0; margin-top: 18px; }
     }
   </style>
 </head>
 <body>
+  <canvas class="margin-art left" aria-hidden="true"></canvas>
+  <canvas class="margin-art right" aria-hidden="true"></canvas>
   <div class="wrap">
 
     <nav>
       <a class="brand" href="#">Yuji Jones</a>
+      <div class="contacts">
+        <button type="button" class="contact gmail" aria-label="Email" aria-expanded="false" aria-controls="contact-pop"
+          data-href="mailto:yjones42@cmc.edu" data-show="yjones42@cmc.edu" data-copy="yjones42@cmc.edu"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M1.636 21.002h3.819v-9.273L0 7.638v11.728c0 .904.732 1.636 1.636 1.636z"/><path fill="#34A853" d="M18.545 21.002h3.819c.904 0 1.636-.732 1.636-1.636V7.638l-5.455 4.091z"/><path fill="#FBBC04" d="M18.545 4.64v7.09L24 7.638V5.457c0-2.023-2.309-3.178-3.927-1.964z"/><path fill="#EA4335" d="M5.455 11.729V4.64L12 9.548l6.545-4.908v7.09L12 16.638z"/><path fill="#C5221F" d="M0 5.457v2.18l5.455 4.092V4.64L3.927 3.493C2.31 2.28 0 3.434 0 5.457z"/></svg></button>
+        <button type="button" class="contact linkedin" aria-label="LinkedIn" aria-expanded="false" aria-controls="contact-pop"
+          data-href="https://www.linkedin.com/in/yuji-jones" data-show="linkedin.com/in/yuji-jones" data-copy="https://www.linkedin.com/in/yuji-jones"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg></button>
+        <button type="button" class="contact github" aria-label="GitHub" aria-expanded="false" aria-controls="contact-pop"
+          data-href="https://github.com/yujijones4" data-show="github.com/yujijones4" data-copy="https://github.com/yujijones4"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3"/></svg></button>
+        <div class="contact-pop" id="contact-pop" role="dialog" aria-label="Contact link" hidden>
+          <a class="pop-link" href="#" target="_blank" rel="me noopener"></a>
+          <button type="button" class="pop-copy">Copy</button>
+        </div>
+      </div>
       <a class="ext resume" href="assets/Yuji-Jones-Resume.pdf" target="_blank" rel="noopener">Resume</a>
     </nav>
 
@@ -147,10 +253,9 @@
           <figcaption>Yuji Jones</figcaption>
         </figure>
         <div class="intro">
-          <p>Hey! I’m Yuji Jones, a senior at Claremont McKenna College graduating this December.</p>
-          <p>In college, I spent most of my time in the research and academic world: fellowships with professors, nonprofit work in rural Indonesia, and social media for the Gould Center, CMC’s humanities institute. Looking back, I noticed a pattern: whether it was an online presence, media engagement, or the policy behind a problem, I kept trying to make things work better.</p>
-          <p>That’s what pulled me toward building. Lately that means AI agents and websites, the kind of work that turns an idea into something real.</p>
-          <p>When I’m not deep in Claude Code, you’ll probably find me dominating at intramurals (I’ve only won one championship out of 23), mixing songs on my FLX4 DJ board in my bedroom, or hanging out with friends. Curious what I’ve been building? Take a look around!</p>
+          <p><span class="dropcap">Hi!</span> I’m Yuji Jones. I build stuff with AI. Most recently, I was an AI agent engineering extern at Wayfair. I’m a senior at Claremont McKenna College graduating this December.</p>
+          <p>Before I started building, I spent most of college in research: fellowships with professors, nonprofit work in rural Indonesia and social media for the Gould Center. Looking back, I noticed a pattern: whether it was media or policy, I kept trying to make things work better.</p>
+          <p>When I’m not deep in Claude Code, you’ll probably find me “dominating” at intramurals (I’ve only won one championship out of 23), mixing songs on my FLX4 DJ board or hanging out with friends. <b>Curious what I’ve been building? Take a look around!</b></p>
         </div>
       </section>
 
@@ -161,7 +266,7 @@
           <div class="item">
             <h3><span class="cmc">Claremont McKenna College</span> <span class="when">2023 – 2026</span></h3>
             <div class="where">Economics &amp; International Relations · Leadership Studies sequence</div>
-            <p><b>Courses I’ve taken:</b> Corporate Finance, Econometrics, International Economics, Economics of Education, Macro/Microeconomics, Foreign Relations of the U.S., Maps and Politics, Security Studies, Middle Eastern Politics, Hist/Glob of Soccer, Leadership and Persuasion, Seminar in Leadership: Becoming a Leader</p>
+            <p><b>Courses taken:</b> Corporate Finance, Econometrics, International Economics, Maps and Politics, Foreign Relations of the U.S., Leadership and Persuasion, Seminar in Leadership: Becoming a Leader</p>
           </div>
         </div>
       </details>
@@ -173,28 +278,27 @@
           <div class="item">
             <h3>AI Agent Engineering Extern <span class="when">Jul – Aug 2026</span></h3>
             <div class="where">Wayfair, via Extern · Remote</div>
-            <p>Built 5 AI agents that turn a two-word input into a full rug market intelligence report, plus a 6-tab dashboard that pulls their output into one decision tool.</p>
           </div>
           <div class="item">
             <h3>Political Research &amp; Education Intern <span class="when">May – Jul 2025</span></h3>
             <div class="where">The Suwandi Foundation · Bali, Indonesia</div>
-            <p>Wrote a 20-page policy report on colonial legacies in East Bali, and taught English to 25 students four days a week.</p>
           </div>
           <div class="item">
             <h3>Student Manager, Social Media &amp; Publicity <span class="when">Aug 2024 – May 2025</span></h3>
             <div class="where">Gould Center for Humanistic Studies</div>
-            <p>Grew Instagram 30% and LinkedIn 47% across 75+ posts featuring student and faculty research.</p>
             <div class="links">
-              <a class="ext" href="https://gouldcenter.org/yuji-jones-student-manager-2425" target="_blank" rel="noopener">See my work</a>
+              <button type="button" class="ext see-work" aria-haspopup="dialog" aria-controls="gould-work">See my work</button>
             </div>
           </div>
           <div class="item">
             <h3>Keck Summer Fellow in Comparative Politics <span class="when">Jun – Aug 2024</span></h3>
             <div class="where">Keck Center for International &amp; Strategic Studies</div>
-            <p>A 25-page paper on the cost overruns and profitability of the Olympic Games, published by the Center.</p>
             <div class="links">
               <a class="ext" href="https://static1.squarespace.com/static/6350624e26a29514ddcf7b2a/t/66980bd5b6e8f361dee550e0/1721240533638/Yuji+Jones+Named+Fellowship+Paper_Summer24.pdf" target="_blank" rel="noopener">Read my paper</a>
             </div>
+          </div>
+          <div class="links resume-link">
+            <a class="ext" href="assets/Yuji-Jones-Resume.pdf" target="_blank" rel="noopener">Check my resume here</a>
           </div>
         </div>
       </details>
@@ -203,28 +307,40 @@
       <details class="fold" id="projects">
         <summary class="label">Projects</summary>
         <div>
-          <div class="item">
+          <div class="item project">
+            <a class="thumb" href="assets/jakarta-flood-presentation.pdf" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="assets/projects/jakarta.jpg" alt="Map of Jakarta flood zones" loading="lazy" width="640" height="400"></a>
+            <div>
             <h3>Jakarta Flood Map</h3>
             <p>An ArcGIS model of Jakarta’s kampungs, waterways and luxury hotels, showing that the people living closest to the floods are the ones the government has left behind.</p>
             <div class="links">
               <a class="ext" href="assets/jakarta-flood-presentation.pdf" target="_blank" rel="noopener">View presentation</a>
             </div>
+            </div>
           </div>
-          <div class="item">
+          <div class="item project">
+            <a class="thumb" href="https://yujijones4.github.io/ChelseaFC-FanMade-Site/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><video src="assets/projects/chelsea.mp4" poster="assets/projects/chelsea.jpg" muted loop playsinline preload="none" width="640" height="400"></video></a>
+            <div>
             <h3>Chelsea FC Fan Site</h3>
-            <p>A fan-made scrollytelling website of my favorite soccer team, Chelsea.</p>
+            <p>A fan-made scrollytelling site about Chelsea, with a particle-animation intro.</p>
             <div class="links">
               <a class="ext" href="https://yujijones4.github.io/ChelseaFC-FanMade-Site/" target="_blank" rel="noopener">Visit</a>
               <a class="ext" href="https://github.com/yujijones4/ChelseaFC-FanMade-Site" target="_blank" rel="noopener">Code</a>
             </div>
+            </div>
           </div>
-          <div class="item">
+          <div class="item project">
+            <a class="thumb" href="https://yujijones4.github.io/Pizzeria-Website/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><video src="assets/projects/pizza.mp4" poster="assets/projects/pizza.jpg" muted loop playsinline preload="none" width="640" height="400"></video></a>
+            <div>
             <h3>Online Pizza Store</h3>
-            <p>A website for a fictional pizza shop, with a menu and ordering flow. My first site built with Claude.</p>
+            <p>An online ordering site for a pizza shop, with a full menu and checkout flow.</p>
             <div class="links">
               <a class="ext" href="https://yujijones4.github.io/Pizzeria-Website/" target="_blank" rel="noopener">Visit</a>
               <a class="ext" href="https://github.com/yujijones4/Pizzeria-Website" target="_blank" rel="noopener">Code</a>
             </div>
+            </div>
+          </div>
+          <div class="links resume-link">
+            <a class="ext" href="https://github.com/yujijones4" target="_blank" rel="me noopener">See more of my work on GitHub</a>
           </div>
         </div>
       </details>
@@ -239,29 +355,193 @@
             <li>Before college, I moved schools <b>nine times</b>.</li>
             <li>I’m <b>right-handed</b> at every sport except frisbee, and I write with my <b>left</b>.</li>
             <li>I have the <b>rarest birthday</b> in the world.</li>
-            <li>I’m a <b>bedroom DJ</b>. I like to mix house, tech house, rap, EDM and white-girl music.</li>
+            <li>I’m a <b>bedroom DJ</b>. I like to mix house, tech house, rap, EDM and a bunch of throwbacks.</li>
           </ul>
         </div>
       </details>
 
     </main>
 
-    <footer>
-      <a class="email" href="mailto:yjones42@cmc.edu">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M1.636 21.002h3.819v-9.273L0 7.638v11.728c0 .904.732 1.636 1.636 1.636z"/><path fill="#34A853" d="M18.545 21.002h3.819c.904 0 1.636-.732 1.636-1.636V7.638l-5.455 4.091z"/><path fill="#FBBC04" d="M18.545 4.64v7.09L24 7.638V5.457c0-2.023-2.309-3.178-3.927-1.964z"/><path fill="#EA4335" d="M5.455 11.729V4.64L12 9.548l6.545-4.908v7.09L12 16.638z"/><path fill="#C5221F" d="M0 5.457v2.18l5.455 4.092V4.64L3.927 3.493C2.31 2.28 0 3.434 0 5.457z"/></svg>
-        <span>yjones42@cmc.edu</span>
-      </a>
-      <div class="social">
-        <a href="https://www.linkedin.com/in/yuji-jones" target="_blank" rel="me noopener" aria-label="LinkedIn" class="linkedin">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/></svg>
-        </a>
-        <a href="https://github.com/yujijones4" target="_blank" rel="me noopener" aria-label="GitHub" class="github">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3"/></svg>
-        </a>
-      </div>
-    </footer>
 
   </div>
+  <!-- Gould Center work, opened from "See my work" under Experience -->
+  <dialog class="work-modal" id="gould-work" aria-labelledby="gould-work-title">
+    <div class="wm-body">
+      <div class="wm-head">
+        <div>
+          <h4 id="gould-work-title">Gould Center for Humanistic Studies</h4>
+          <p>Posts I designed as Student Manager, Social Media &amp; Publicity · 2024–25</p>
+        </div>
+        <button type="button" class="wm-close" aria-label="Close">&times;</button>
+      </div>
+      <h5 class="wm-label">Posts</h5>
+      <div class="wm-grid">
+          <img src="assets/gould/research-spotlight.jpg" alt="Faculty Research Spotlight post featuring Professor Tanner Moore" width="432" height="432" loading="lazy">
+          <img src="assets/gould/book-reception-1.jpg" alt="Faculty Book Reception event post for Professor Seth Lerer" width="432" height="432" loading="lazy">
+          <img src="assets/gould/gouldie-spotlight.jpg" alt="Gouldie Spotlight post on the Freedom Debates" width="432" height="432" loading="lazy">
+          <img src="assets/gould/research-highlight.jpg" alt="Faculty Research Highlight post with Professor Minju Kim" width="432" height="432" loading="lazy">
+          <img src="assets/gould/gould-fellow.jpg" alt="Fellow Friday post introducing a Gould Center Fellow" width="432" height="432" loading="lazy">
+          <img src="assets/gould/manager-monday.jpg" alt="Manager Monday post introducing a student manager" width="432" height="432" loading="lazy">
+      </div>
+      <h5 class="wm-label">Reels</h5>
+      <div class="wm-reels">
+          <video src="assets/gould/reel-lacma.mp4" poster="assets/gould/reel-lacma.jpg" muted loop playsinline preload="none" width="360" height="640" aria-label="Reel: Gould Center Fellows visit LACMA"></video>
+          <video src="assets/gould/reel-lerer.mp4" poster="assets/gould/reel-lerer.jpg" muted loop playsinline preload="none" width="360" height="640" aria-label="Reel: Faculty Book Spotlight with Professor Seth Lerer"></video>
+          <video src="assets/gould/reel-editorial.mp4" poster="assets/gould/reel-editorial.jpg" muted loop playsinline preload="none" width="360" height="640" aria-label="Reel: a research assistant on the Editorial Board talks about her work"></video>
+          <video src="assets/gould/reel-fair.mp4" poster="assets/gould/reel-fair.jpg" muted loop playsinline preload="none" width="360" height="640" aria-label="Reel: the Gould Center table at the Campus Engagement Fair"></video>
+      </div>
+      <p class="wm-stats"><b>75+</b> posts&ensp;·&ensp;Instagram followers <b>+30%</b>&ensp;·&ensp;LinkedIn followers <b>+47%</b></p>
+    </div>
+  </dialog>
+
+  <script>
+    // Margin animation: blobs of characters (my name in letters and hiragana, plus symbols)
+    // that slowly morph and flicker. Moving the mouse over a margin stirs up a trail of characters.
+    (function () {
+      var canvases = Array.prototype.slice.call(document.querySelectorAll('.margin-art'));
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var CW = 8, CH = 11, RADIUS = 64;
+      var FONT = '600 9px ui-monospace, "SF Mono", Menlo, Consolas, "Hiragino Sans", "Noto Sans JP", sans-serif';
+      var LETTERS = 'YUJIJONESゆうじさとう';
+      var KANA = 'ゆうじさとう';
+      var SYMS = '#$%?!+*=';
+      var BLUE = '10, 102, 194';
+      var INK = '17, 17, 17';
+
+      function hash(x, y) {
+        var h = (Math.imul(x, 374761393) + Math.imul(y, 668265263)) | 0;
+        h = Math.imul(h ^ (h >>> 13), 1274126177);
+        return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+      }
+      function smooth(t) { return t * t * (3 - 2 * t); }
+      function noise(x, y) {
+        var xi = Math.floor(x), yi = Math.floor(y), u = smooth(x - xi), v = smooth(y - yi);
+        var a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+        return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+      }
+      function field(x, y, t) {
+        return 0.62 * noise(x * 0.1 + t * 0.03, y * 0.06 - t * 0.09) +
+               0.38 * noise(x * 0.22 - t * 0.06 + 40, y * 0.13 + t * 0.05 + 17);
+      }
+
+      var states = canvases.map(function (cv, i) {
+        return { cv: cv, ctx: cv.getContext('2d'), seed: i * 97, cols: 0, rows: 0, chars: null, heat: null, w: 0, h: 0 };
+      });
+      var hot = false;
+
+      function resize(st) {
+        var w = st.cv.clientWidth, h = st.cv.clientHeight, dpr = window.devicePixelRatio || 1;
+        if (!w || !h) { st.w = 0; return; }
+        st.w = w; st.h = h;
+        st.cv.width = Math.round(w * dpr); st.cv.height = Math.round(h * dpr);
+        st.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        st.cols = Math.ceil(w / CW); st.rows = Math.ceil(h / CH) + 1;
+        st.chars = new Uint8Array(st.cols * st.rows);
+        st.heat = new Float32Array(st.cols * st.rows);
+        for (var k = 0; k < st.chars.length; k++) st.chars[k] = Math.random() * 255;
+      }
+
+      function draw(st, t) {
+        if (!st.w) return;
+        var ctx = st.ctx, anyHeat = false;
+        ctx.clearRect(0, 0, st.w, st.h);
+        ctx.font = FONT; ctx.textBaseline = 'top'; ctx.textAlign = 'center';
+        var scrollRows = reduce ? 0 : window.scrollY / CH * 0.3;
+        var shift = Math.floor(scrollRows), frac = (scrollRows - shift) * CH;
+        for (var r = 0; r < st.rows; r++) {
+          var gy = r + shift;
+          for (var c = 0; c < st.cols; c++) {
+            var idx = r * st.cols + c;
+            var heat = st.heat[idx];
+            if (heat > 0.01) { st.heat[idx] = heat * 0.9; anyHeat = true; } else heat = 0;
+            if (!reduce && Math.random() < 0.03 + heat * 0.6) st.chars[idx] = Math.random() * 255;
+            var n = st.chars[idx];
+            // Boost toward the screen's outer edge so the characters run unbroken from top to bottom
+            var outer = 1 - (st.seed ? st.cols - 1 - c : c) / st.cols;
+            var f = field(c + st.seed, gy, t) + 0.22 * outer * outer;
+            var ch = null, color;
+            if (f >= 0.55) {
+              ch = LETTERS[n % LETTERS.length];
+              var level = Math.min(1, (f - 0.55) / 0.25);
+              color = n < 14 || heat > 0.5
+                ? 'rgba(' + INK + ',' + (0.7 + heat * 0.3).toFixed(2) + ')'
+                : 'rgba(' + BLUE + ',' + Math.min(1, 0.55 - level * 0.35 + heat * 0.6).toFixed(2) + ')';
+            } else if (f >= 0.5) {
+              ch = SYMS[n % SYMS.length];
+              color = 'rgba(' + BLUE + ',' + Math.min(1, 0.8 + heat * 0.2).toFixed(2) + ')';
+            } else if (heat > 0.06) {
+              ch = n % 3 ? KANA[n % KANA.length] : SYMS[n % SYMS.length];
+              color = 'rgba(' + (n < 30 ? INK : BLUE) + ',' + Math.min(0.9, heat).toFixed(2) + ')';
+            } else if (hash(c + st.seed, gy) > 0.985) {
+              ch = '.'; color = 'rgba(' + INK + ',0.18)';
+            }
+            if (!ch) continue;
+            ctx.fillStyle = color;
+            ctx.fillText(ch, c * CW + CW / 2, r * CH - frac);
+          }
+        }
+        return anyHeat;
+      }
+
+      function drawAll(t) {
+        var any = false;
+        states.forEach(function (st) { if (draw(st, t)) any = true; });
+        hot = any;
+      }
+      function resizeAll() { states.forEach(resize); drawAll(performance.now() / 1000); }
+
+      // Mouse trail: warm up the cells near the pointer (and along its path so fast moves leave no gaps)
+      var lastX = null, lastY = null;
+      function stir(x, y) {
+        states.forEach(function (st) {
+          if (!st.w) return;
+          var rect = st.cv.getBoundingClientRect();
+          var px = x - rect.left, py = y - rect.top;
+          if (px < -RADIUS || px > st.w + RADIUS || py < -RADIUS || py > st.h + RADIUS) return;
+          var c0 = Math.max(0, Math.floor((px - RADIUS) / CW)), c1 = Math.min(st.cols - 1, Math.ceil((px + RADIUS) / CW));
+          var r0 = Math.max(0, Math.floor((py - RADIUS) / CH)), r1 = Math.min(st.rows - 1, Math.ceil((py + RADIUS) / CH));
+          for (var r = r0; r <= r1; r++) {
+            for (var c = c0; c <= c1; c++) {
+              var dx = c * CW + CW / 2 - px, dy = r * CH + CH / 2 - py;
+              var d = Math.sqrt(dx * dx + dy * dy);
+              if (d < RADIUS) {
+                var i = r * st.cols + c;
+                st.heat[i] = Math.min(1, st.heat[i] + (1 - d / RADIUS) * 0.35);
+              }
+            }
+          }
+          hot = true;
+        });
+      }
+      if (!reduce) {
+        window.addEventListener('pointermove', function (e) {
+          if (e.pointerType !== 'mouse') return;
+          var x = e.clientX, y = e.clientY;
+          if (lastX !== null) {
+            var dist = Math.hypot(x - lastX, y - lastY), steps = Math.min(12, Math.floor(dist / 12));
+            for (var k = 1; k <= steps; k++) stir(lastX + (x - lastX) * k / (steps + 1), lastY + (y - lastY) * k / (steps + 1));
+          }
+          stir(x, y);
+          lastX = x; lastY = y;
+        });
+        document.addEventListener('pointerleave', function () { lastX = lastY = null; });
+      }
+
+      window.addEventListener('resize', resizeAll);
+      resizeAll();
+
+      if (reduce) return;
+      var last = 0;
+      (function loop(now) {
+        // ~14 frames a second at rest, ~30 while a trail is fading so it feels smooth
+        if (now - last > (hot ? 33 : 70) && states.some(function (st) { return st.w; })) {
+          last = now;
+          drawAll(now / 1000);
+        }
+        requestAnimationFrame(loop);
+      })(0);
+    })();
+  </script>
   <script>
     // Sections open and close with a slow slide. Opening one closes any other.
     var DURATION = 700;
@@ -323,6 +603,108 @@
       target.open = true;
       target.classList.add('is-open');
     }
+  </script>
+  <script>
+    // Contact icons: clicking one shows a small box underneath with its link (and a Copy button)
+    (function () {
+      var buttons = Array.prototype.slice.call(document.querySelectorAll('.contact'));
+      var pop = document.getElementById('contact-pop');
+      var link = pop.querySelector('.pop-link'), copy = pop.querySelector('.pop-copy');
+      var box = pop.parentNode, current = null, hideTimer;
+
+      function place(btn) {
+        var bw = box.getBoundingClientRect(), b = btn.getBoundingClientRect();
+        var center = b.left + b.width / 2 - bw.left;
+        var w = pop.offsetWidth, left = center - w / 2;
+        // keep the box on screen on narrow phones
+        var minLeft = 12 - bw.left, maxLeft = document.documentElement.clientWidth - 12 - bw.left - w;
+        left = Math.max(minLeft, Math.min(maxLeft, left));
+        pop.style.left = left + 'px';
+        pop.style.setProperty('--caret', (center - left) + 'px');
+      }
+      function open(btn) {
+        clearTimeout(hideTimer);
+        buttons.forEach(function (b) { b.setAttribute('aria-expanded', b === btn ? 'true' : 'false'); });
+        link.href = btn.dataset.href;
+        link.textContent = btn.dataset.show;
+        link.target = btn.dataset.href.indexOf('mailto:') === 0 ? '_self' : '_blank';
+        copy.textContent = 'Copy';
+        var wasOpen = !pop.hidden;
+        if (!wasOpen) { pop.style.transition = 'none'; }
+        pop.hidden = false;
+        place(btn);
+        pop.offsetWidth; // apply position before animating in
+        pop.style.transition = '';
+        pop.classList.add('show');
+        current = btn;
+      }
+      function close() {
+        if (!current) return;
+        buttons.forEach(function (b) { b.setAttribute('aria-expanded', 'false'); });
+        pop.classList.remove('show');
+        current = null;
+        hideTimer = setTimeout(function () { pop.hidden = true; }, 200);
+      }
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          current === btn ? close() : open(btn);
+        });
+      });
+      copy.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var text = current && current.dataset.copy;
+        if (!text || !navigator.clipboard) return;
+        navigator.clipboard.writeText(text).then(function () { copy.textContent = 'Copied'; });
+      });
+      pop.addEventListener('click', function (e) { e.stopPropagation(); });
+      document.addEventListener('click', close);
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && current) { var b = current; close(); b.focus(); } });
+      window.addEventListener('resize', function () { if (current) place(current); });
+    })();
+
+    // Project previews: play each 5-second clip on a loop while it's on screen
+    (function () {
+      var vids = Array.prototype.slice.call(document.querySelectorAll('.thumb video'));
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          var v = en.target;
+          if (en.isIntersecting) { v.preload = 'auto'; var p = v.play(); if (p) p.catch(function () {}); }
+          else v.pause();
+        });
+      }, { threshold: 0.25 });
+      vids.forEach(function (v) { io.observe(v); });
+    })();
+  </script>
+  <script>
+    // "See my work" opens the Gould Center pop-up; close with the X, Escape or a click outside it
+    (function () {
+      var dlg = document.getElementById('gould-work');
+      var opener = document.querySelector('.see-work');
+      if (!dlg || !opener || !dlg.showModal) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function shut() {
+        if (!dlg.open || dlg.classList.contains('closing')) return;
+        if (reduce) { dlg.close(); return; }
+        dlg.classList.add('closing');
+        setTimeout(function () { dlg.classList.remove('closing'); dlg.close(); }, 160);
+      }
+      var reels = Array.prototype.slice.call(dlg.querySelectorAll('video'));
+      opener.addEventListener('click', function () {
+        dlg.showModal();
+        document.documentElement.classList.add('modal-open');
+        if (!reduce) reels.forEach(function (v) { v.preload = 'auto'; var p = v.play(); if (p) p.catch(function () {}); });
+      });
+      dlg.addEventListener('close', function () {
+        reels.forEach(function (v) { v.pause(); });
+        document.documentElement.classList.remove('modal-open');
+        opener.focus();
+      });
+      dlg.addEventListener('cancel', function (e) { e.preventDefault(); shut(); });
+      dlg.querySelector('.wm-close').addEventListener('click', shut);
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) shut(); });
+    })();
   </script>
 </body>
 </html>
